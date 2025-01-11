@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/graveyard/interior
+/area/vtm/battle/interior/graveyard
 	name = "Graveyard Interior"
 	icon_state = "interior"
 	upper = FALSE

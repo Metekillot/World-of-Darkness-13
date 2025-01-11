@@ -1,4 +1,4 @@
-/area/vtm/unionsquare
+/area/vtm/masquerade/exterior/unionsquare
 	name = "Union Square"
 	icon_state = "unionsquare"
 	ambience_index = AMBIENCE_CITY

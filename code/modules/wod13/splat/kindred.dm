@@ -1047,7 +1047,7 @@
 /datum/splat/supernatural/kindred/spec_life(mob/living/carbon/human/H)
 	. = ..()
 	if(H.clane?.name == "Baali")
-		if(istype(get_area(H), /area/vtm/church))
+		if(istype(get_area(H), /area/vtm/masquerade/interior/church))
 			if(prob(25))
 				to_chat(H, "<span class='warning'>You don't belong here!</span>")
 				H.adjustFireLoss(20)

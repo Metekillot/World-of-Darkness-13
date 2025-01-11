@@ -1,4 +1,4 @@
-/area/vtm/interior/giovanni
+/area/vtm/elysium/interior/giovanni
 	name = "Giovanni Mansion"
 	icon_state = "giovanni"
 	upper = FALSE

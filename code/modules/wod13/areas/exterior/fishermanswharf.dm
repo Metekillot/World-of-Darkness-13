@@ -1,4 +1,4 @@
-/area/vtm/fishermanswharf
+/area/vtm/masquerade/exterior/fishermanswharf
 	name = "Fisherman's Wharf"
 	icon_state = "fishermanswharf"
 	ambience_index = AMBIENCE_CITY

@@ -1,4 +1,4 @@
-/area/vtm/interior/shop
+/area/vtm/masquerade/interior/shop
 	name = "Shop"
 	icon_state = "shop"
 	upper = FALSE

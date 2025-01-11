@@ -1,4 +1,4 @@
-/area/vtm/interior/bianchiBank
+/area/vtm/elysium/interior/bianchiBank
 	name = "Bianchi Bank"
 	icon_state = "giovanni"
 	upper = FALSE

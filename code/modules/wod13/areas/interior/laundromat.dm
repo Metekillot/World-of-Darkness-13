@@ -1,4 +1,4 @@
-/area/vtm/interior/laundromat
+/area/vtm/masquerade/interior/laundromat
 	name = "Laundromat"
 	icon_state = "shop"
 	upper = FALSE

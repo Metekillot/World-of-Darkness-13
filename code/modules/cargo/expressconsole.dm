@@ -285,7 +285,7 @@
 						LZ = get_turf(beacon)
 						beacon.update_status(SP_LAUNCH)
 //					else if (!usingBeacon)//find a suitable supplypod landing zone in cargobay
-//						landingzone = GLOB.areas_by_type[/area/vtm/supply]
+//						landingzone = GLOB.areas_by_type[/area/vtm/masquerade/interior/supply]
 //						if (!landingzone)
 //							WARNING("[src] couldnt find a Quartermaster/Storage (aka cargobay) area on the station, and as such it has set the supplypod landingzone to the area it resides in.")
 //							landingzone = get_area(src)

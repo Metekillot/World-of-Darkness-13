@@ -438,9 +438,9 @@ GLOBAL_LIST_EMPTY(p25_radios)
 // restricted areas, add more if you don't want the p25s to work in that area.
 /obj/item/p25radio/proc/is_in_valid_area(atom/A)
 	var/static/list/restricted_areas = list(
-		/area/vtm/sewer,
-		/area/vtm/sewer/nosferatu_town,
-		/area/vtm/interior/wyrm_corrupted
+		/area/vtm/battle/interior/sewer,
+		/area/vtm/elysium/interior/nosferatu_town,
+		/area/vtm/battle/interior/wyrm_corrupted
 	)
 	var/area/current_area = get_area(A)
 	for(var/restricted_type in restricted_areas)

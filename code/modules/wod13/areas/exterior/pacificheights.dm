@@ -1,4 +1,4 @@
-/area/vtm/pacificheights
+/area/vtm/masquerade/exterior/pacificheights
 	name = "Pacific Heights"
 	icon_state = "pacificheights"
 	ambience_index = AMBIENCE_NATURE

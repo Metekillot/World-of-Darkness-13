@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/prince
+/area/vtm/elysium/interior/prince
 	name = "Millennium Tower"
 	icon_state = "prince"
 	ambience_index = AMBIENCE_PRINCE

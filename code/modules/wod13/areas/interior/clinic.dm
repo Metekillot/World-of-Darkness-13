@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/clinic
+/area/vtm/masquerade/interior/clinic
 	name = "Clinic"
 	icon_state = "clinic"
 	ambience_index = AMBIENCE_INTERIOR

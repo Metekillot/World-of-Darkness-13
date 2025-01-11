@@ -1,4 +1,4 @@
-/area/vtm/forest
+/area/vtm/battle/exterior/forest
 	name = "Forest"
 	icon_state = "park"
 	upper = TRUE

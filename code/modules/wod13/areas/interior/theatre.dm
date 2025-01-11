@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/theatre
+/area/vtm/elysium/interior/theatre
 	name = "Theatre"
 	icon_state = "theatre"
 	ambience_index = AMBIENCE_INTERIOR

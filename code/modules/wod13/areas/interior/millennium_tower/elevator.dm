@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/elevator
+/area/vtm/elysium/interior/elevator
 	name = "Elevator"
 	icon_state = "prince"
 	music = /datum/vampiremusic/elevator

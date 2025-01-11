@@ -1,4 +1,4 @@
-/area/vtm/interior/vjanitor
+/area/vtm/masquerade/interior/vjanitor
 	name = "Cleaners"
 	icon_state = "janitor"
 	upper = FALSE

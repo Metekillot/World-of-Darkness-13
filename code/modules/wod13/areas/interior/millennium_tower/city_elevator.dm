@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/city_elevator
+/area/vtm/elysium/interior/city_elevator
 	name = "City Elevator"
 	icon_state = "prince"
 	ambience_index = AMBIENCE_INTERIOR

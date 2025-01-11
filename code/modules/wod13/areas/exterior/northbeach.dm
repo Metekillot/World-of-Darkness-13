@@ -1,4 +1,4 @@
-/area/vtm/northbeach
+/area/vtm/masquerade/exterior/northbeach
 	name = "North Beach"
 	icon_state = "northbeach"
 	ambience_index = AMBIENCE_BEACH

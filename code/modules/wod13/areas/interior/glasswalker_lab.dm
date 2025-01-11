@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/interior/glasswalker
+/area/vtm/battle/interior/glasswalker
 	name = "Glasswalker's Lab"
 	icon_state = "supply"
 	upper = FALSE

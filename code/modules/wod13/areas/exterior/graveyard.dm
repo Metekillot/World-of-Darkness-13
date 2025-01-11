@@ -1,4 +1,4 @@
-/area/vtm/graveyard
+/area/vtm/battle/exterior/graveyard
 	name = "Graveyard"
 	icon_state = "graveyard"
 	ambience_index = AMBIENCE_INTERIOR

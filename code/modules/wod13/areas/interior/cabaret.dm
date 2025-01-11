@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/cabaret
+/area/vtm/masquerade/interior/cabaret
 	name = "Siren's Cabaret"
 	icon_state = "melpominee"
 	ambience_index = AMBIENCE_INTERIOR

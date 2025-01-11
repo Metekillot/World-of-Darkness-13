@@ -639,7 +639,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 //		L.client.ambience_playing = 1
 	if(L)
 		if(L.client)
-			if(istype(get_area(loc), /area/vtm/northbeach))
+			if(istype(get_area(loc), /area/vtm/masquerade/exterior/northbeach))
 				if(!L.client.ambience_playing)
 					L.client.ambience_playing = 1
 					SEND_SOUND(L, sound('code/modules/wod13/sounds/beach.ogg', repeat = 1, wait = 0, volume = 35, channel = CHANNEL_BUZZ))

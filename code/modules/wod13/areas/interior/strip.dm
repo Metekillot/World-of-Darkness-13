@@ -1,4 +1,4 @@
-/area/vtm/interior/strip
+/area/vtm/masquerade/interior/strip
 	name = "Strip Club"
 	icon_state = "strip"
 	upper = FALSE

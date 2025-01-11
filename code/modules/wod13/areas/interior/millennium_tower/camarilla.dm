@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/camarilla
+/area/vtm/elysium/interior/camarilla
 	name = "Millennium Apartements"
 	icon_state = "camarilla"
 	ambience_index = AMBIENCE_INTERIOR

@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/church
+/area/vtm/masquerade/interior/church
 	name = "Church"
 	icon_state = "church"
 	music = /datum/vampiremusic/church

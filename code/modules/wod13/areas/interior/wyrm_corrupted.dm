@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/interior/wyrm_corrupted
+/area/vtm/battle/interior/wyrm_corrupted
 	name = "Corrupted by Wyrm"
 	icon_state = "graveyard"
 	upper = FALSE

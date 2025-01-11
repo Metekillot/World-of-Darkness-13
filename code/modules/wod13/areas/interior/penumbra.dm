@@ -1,5 +1,4 @@
-//todo: make child of /area/vtm/interior - Hex
-/area/vtm/interior/penumbra
+/area/vtm/battle/interior/penumbra
 	name = "Penumbra"
 	icon_state = "church"
 	ambience_index = AMBIENCE_NATURE

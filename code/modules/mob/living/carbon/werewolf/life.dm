@@ -64,26 +64,26 @@
 						last_frenzy_check = world.time
 						rollfrenzy()
 
-			if(istype(get_area(src), /area/vtm/interior/penumbra))
+			if(istype(get_area(src), /area/vtm/battle/interior/penumbra))
 				if((last_veil_restore + 40 SECONDS) < world.time)
 					adjust_veil(1, src, TRUE)
 					last_veil_restore = world.time
 
 			switch(auspice.tribe)
 				if("Wendigo")
-					if(istype(get_area(src), /area/vtm/forest))
+					if(istype(get_area(src), /area/vtm/battle/exterior/forest))
 						if((last_veil_restore + 50 SECONDS) <= world.time)
 							adjust_veil(1, src, TRUE)
 							last_veil_restore = world.time
 
 				if("Glasswalkers")
-					if(istype(get_area(src), /area/vtm/interior/glasswalker))
+					if(istype(get_area(src), /area/vtm/battle/interior/glasswalker))
 						if((last_veil_restore + 50 SECONDS) <= world.time)
 							adjust_veil(1, src, TRUE)
 							last_veil_restore = world.time
 
 				if("Black Spiral Dancers")
-					if(istype(get_area(src), /area/vtm/interior/wyrm_corrupted))
+					if(istype(get_area(src), /area/vtm/battle/interior/wyrm_corrupted))
 						if((last_veil_restore + 50 SECONDS) <= world.time)
 							adjust_veil(1, src, TRUE)
 							last_veil_restore = world.time

@@ -44,7 +44,7 @@ SUBSYSTEM_DEF(graveyard)
 //				if(L.mind)
 //					if(L.mind.assigned_role == "Graveyard Keeper")
 //						if(L.client)
-//							if(istype(get_area(L), /area/vtm/graveyard))
+//							if(istype(get_area(L), /area/vtm/battle/exterior/graveyard))
 //								L.AdjustMasquerade(-1)
 //								total_bad += 1
 //		lost_points = 0
