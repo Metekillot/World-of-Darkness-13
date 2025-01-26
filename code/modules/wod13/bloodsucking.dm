@@ -206,12 +206,6 @@
 					if(isnpc(mob))
 						var/mob/living/carbon/human/npc/Npc = mob
 						Npc.last_attacker = null
-						killed_count = killed_count+1
-						if(killed_count >= 5)
-//							GLOB.fuckers |= src
-							warrant = TRUE //PSEUDO_M come back to inspect this but bedtime soon
-							SEND_SOUND(src, sound('code/modules/wod13/sounds/humanity_loss.ogg', 0, 0, 75))
-							to_chat(src, "<span class='userdanger'><b>POLICE ASSAULT IN PROGRESS</b></span>")
 					SEND_SOUND(src, sound('code/modules/wod13/sounds/feed_failed.ogg', 0, 0, 75))
 					to_chat(src, "<span class='warning'>This sad sacrifice for your own pleasure affects something deep in your mind.</span>")
 					AdjustMasquerade(-1)
