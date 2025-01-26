@@ -52,6 +52,22 @@
 #define JOB_DISPLAY_ORDER_BOGATYR 33
 #define JOB_DISPLAY_ORDER_ZADRUGA 34
 
+#define LEADER "leader"
+#define COMMAND "command"
+#define CAMARILLA_COUNCIL "camarilla_council"
+#define ANARCH "anarch"
+#define CITIZEN "citizen"
+#define POLICE "police"
+#define NATIONAL_SECURITY "national_security"
+#define SERVICES "services"
+#define CLINIC "clinic"
+#define GIOVANNI "giovanni"
+#define TZIMISCE "tzimisce"
+#define WAREHOUSE "warehouse"
+#define TREMERE "tremere"
+#define CHURCH "church"
+#define GANG "gang"
+
 #define LEADER_POSITIONS list( \
 	"Prince", \
 	"Baron", \

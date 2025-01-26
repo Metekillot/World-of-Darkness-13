@@ -152,15 +152,15 @@
 		"Triad"
 	)
 	var/list/departments = list(
-		"Camarilla" = GLOB.command_positions,
-		"Primogen Council" = GLOB.camarilla_council_positions,
-		"Tremere" = GLOB.tremere_positions,
-		"Anarch" = GLOB.anarch_positions,
-		"Giovanni" = GLOB.giovanni_positions,
-		"Old Clan Tzimisce" = GLOB.tzimisce_positions,
-		"Law Enforcement" = GLOB.police_positions + GLOB.national_security_positions,
-		"Warehouse" = GLOB.warehouse_positions,
-		"Triad" = GLOB.gang_positions
+		"Camarilla" = SSjob.cohorts[
+		"Primogen Council" = SSjob.cohorts[
+		"Tremere" = SSjob.cohorts[
+		"Anarch" = SSjob.cohorts[
+		"Giovanni" = SSjob.cohorts[
+		"Old Clan Tzimisce" = SSjob.cohorts[
+		"Law Enforcement" = SSjob.cohorts[
+		"Warehouse" = SSjob.cohorts[
+		"Triad" = SSjob.cohorts[
 	)
 	for(var/datum/data/record/t in GLOB.data_core.general)
 		var/name = t.fields["name"]
@@ -234,66 +234,6 @@
 		var/id = num2hex(record_id_num++,6)
 		if(!C)
 			C = H.client
-		var/image = get_id_photo(H, C, show_directions)
-		var/datum/picture/pf = new
-		var/datum/picture/ps = new
-		pf.picture_name = "[H]"
-		ps.picture_name = "[H]"
-		pf.picture_desc = "This is [H]."
-		ps.picture_desc = "This is [H]."
-		pf.picture_image = icon(image, dir = SOUTH)
-		ps.picture_image = icon(image, dir = WEST)
-		var/obj/item/photo/photo_front = new(null, pf)
-		var/obj/item/photo/photo_side = new(null, ps)
-
-		//These records should ~really~ be merged or something
-		//General Record
-		var/datum/data/record/G = new()
-		G.fields["id"]			= id
-		G.fields["name"]		= H.real_name
-		G.fields["rank"]		= assignment
-		G.fields["age"]			= H.age
-		G.fields["species"]	= H.dna.species.name
-		G.fields["fingerprint"]	= md5(H.dna.uni_identity)
-		G.fields["p_stat"]		= "Active"
-		G.fields["m_stat"]		= "Stable"
-		G.fields["gender"]			= H.gender
-		if(H.gender == "male")
-			G.fields["gender"]  = "Male"
-		else if(H.gender == "female")
-			G.fields["gender"]  = "Female"
-		else
-			G.fields["gender"]  = "Other"
-		G.fields["photo_front"]	= photo_front
-		G.fields["photo_side"]	= photo_side
-		general += G
-
-		//Medical Record
-		var/datum/data/record/M = new()
-		M.fields["id"]			= id
-		M.fields["name"]		= H.real_name
-		M.fields["blood_type"]	= H.dna.blood_type
-		M.fields["b_dna"]		= H.dna.unique_enzymes
-		M.fields["mi_dis"]		= H.get_quirk_string(!medical, CAT_QUIRK_MINOR_DISABILITY)
-		M.fields["mi_dis_d"]	= H.get_quirk_string(medical, CAT_QUIRK_MINOR_DISABILITY)
-		M.fields["ma_dis"]		= H.get_quirk_string(!medical, CAT_QUIRK_MAJOR_DISABILITY)
-		M.fields["ma_dis_d"]	= H.get_quirk_string(medical, CAT_QUIRK_MAJOR_DISABILITY)
-		M.fields["cdi"]			= "None"
-		M.fields["cdi_d"]		= "No diseases have been diagnosed at the moment."
-		M.fields["notes"]		= H.get_quirk_string(!medical, CAT_QUIRK_NOTES)
-		M.fields["notes_d"]		= H.get_quirk_string(medical, CAT_QUIRK_NOTES)
-		medical += M
-
-		//Security Record
-		var/datum/data/record/S = new()
-		S.fields["id"]			= id
-		S.fields["name"]		= H.real_name
-		S.fields["criminal"]	= "None"
-		S.fields["citation"]	= list()
-		S.fields["crim"]		= list()
-		S.fields["notes"]		= "No notes."
-		security += S
-
 		//Locked Record
 		var/datum/data/record/L = new()
 		L.fields["id"]			= md5("[H.real_name][H.mind.assigned_role]")	//surely this should just be id, like the others?
@@ -316,12 +256,3 @@
 		L.fields["mindref"]		= H.mind
 		locked += L
 	return
-
-/datum/datacore/proc/get_id_photo(mob/living/carbon/human/H, client/C, show_directions = list(SOUTH))
-	var/datum/job/J = SSjob.GetJob(H.mind.assigned_role)
-	var/datum/preferences/P
-	if(!C)
-		C = H.client
-	if(C)
-		P = C.prefs
-	return get_flat_human_icon(null, J, P, DUMMY_HUMAN_SLOT_MANIFEST, show_directions)
