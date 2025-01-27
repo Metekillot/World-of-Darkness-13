@@ -9449,7 +9449,7 @@
 "vGj" = (/obj/structure/railing{dir = 4},/obj/structure/railing{dir = 8},/turf/open/openspace,/area/vtm/interior/mansion)
 "vGl" = (/obj/structure/chair/sofa/left{dir = 8},/turf/open/floor/plating/parquetry/old,/area/vtm/interior)
 "vGH" = (/obj/machinery/light/small{pixel_y = 32},/turf/open/floor/carpet/black,/area/vtm/cabaret)
-"vGY" = (/obj/structure/table/wood,/obj/item/flashlight/lamp{light_color = #FFA500; light_range = 3},/turf/open/floor/plating/vampcarpet,/area/vtm/interior/techshop)
+"vGY" = (/obj/structure/table/wood,/obj/item/flashlight/lamp{light_color = "#FFA500"; light_range = 3},/turf/open/floor/plating/vampcarpet,/area/vtm/interior/techshop)
 "vHi" = (/obj/structure/bed,/obj/item/bedsheet/brown,/turf/open/floor/plating/parquetry,/area/vtm/interior/giovanni)
 "vHt" = (/obj/structure/chair/plastic{dir = 8},/obj/effect/decal/cardboard,/mob/living/carbon/human/npc/hobo,/turf/open/floor/plating/rough/cave,/area/vtm/sewer)
 "vHy" = (/obj/structure/extinguisher_cabinet{pixel_y = 32},/obj/structure/closet/cardboard,/turf/open/floor/plating/parquetry/old,/area/vtm/interior/shop)
