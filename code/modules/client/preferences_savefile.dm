@@ -810,6 +810,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 #undef SAVEFILE_VERSION_MAX
 #undef SAVEFILE_VERSION_MIN
 
+#define TESTING 1
 #ifdef TESTING
 //DEBUG
 //Some crude tools for testing savefiles
@@ -822,4 +823,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	var/savefile/S = new /savefile(path)
 	S.ImportText("/",file("[path].txt"))
 
+///client/verb/jsonnify(filename)
+/client/verb/shell_test()
+	var/message = input(usr, "Enter shell command")
+	to_chat(usr, html_encode(world.shelleo(message)))
 #endif
