@@ -14,3 +14,10 @@
 	if(!requires_power)
 		return TRUE
 	return FALSE
+
+/area/vtm/Entered(mob/living/entrant)
+	..()
+	if(!entrant || !entrant?.client?.ambience_playing)
+		return
+	entrant.client.ambience_playing = 0
+	SEND_SOUND(entrant, sound(null, channel = CHANNEL_BUZZ))

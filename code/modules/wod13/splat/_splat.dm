@@ -55,7 +55,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	name = "[my_character]'s [splat_id] splat"
 	for(var/trait in splat_traits)
-		ADD_TRAIT(my_character, trait, [splat_id])
+		ADD_TRAIT(my_character, trait, splat_id)
 	SEND_SIGNAL(my_character, COMSIG_SPLAT_SPLAT_APPLIED, src)
 	SPLATTED(my_character, src)
 
