@@ -30,13 +30,13 @@
 
 #define GET_MERIT_STATUS(target, merit) SEND_SIGNAL(target, CHECK_MERIT(merit))
 
-#define get_knowledge_type(target, knowledge_type) {
+#define get_knowledge_type(target, knowledge_type) {\
 	if(!isliving(user) && !istype(user, /datum/mind)){\
 		return FALSE;\
 	}\
 	if(!is_text(knowledge_type)){\
-		if(!is_path(knowledge_type, /datum/knowledge))
-			if(!isknowledge(knowledge_type))
+		if(!is_path(knowledge_type, /datum/knowledge))\
+			if(!isknowledge(knowledge_type))\
 				CRASH("get_knowledge_type: Invalid knowledge type passed to function.");\
 			var/knowledge = GLOB.knowledge_types[knowledge_type];\
 		return FALSE;\
@@ -44,5 +44,5 @@
 	if(istype(target, /datum/mind)){\
 		var/datum/mind/target_mind = target;\
 		return target_mind.knowledge[knowledge_type];\
-	}
+	}\
 }

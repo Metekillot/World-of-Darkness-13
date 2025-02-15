@@ -23,7 +23,7 @@
 	var/mob/living/target = target;\
 	if(!target.mind){\
 		return FALSE;}\
-	return ( target.mind.knowledge["disciplines"].Find(discipline) )
+	return ( target.mind.knowledge["disciplines"].Find(discipline) )\
 }
 
 #define GET_DISCIPLINE(owner, discipline) {\
