@@ -1,6 +1,6 @@
 import { useBackend } from '../../backend';
 import { useLocalState } from '../../backend';
-import { Button, Input, LabeledList, Section, Box, } from '../../components';
+import { Button, Input, LabeledList, Section, Box } from '../../components';
 import { Window } from '../../layouts';
 
 export const AtmMain = (props, context) => {
@@ -125,7 +125,8 @@ export const AtmMain = (props, context) => {
                         borderRadius="4px"
                         backgroundColor={selectedAccount === account.account_owner ? '#007bff' : '#f8f9fa'}
                         color={selectedAccount === account.account_owner ? '#fff' : '#000'}
-                        onClick={() => setSelectedAccount(account.account_owner)}
+                        onClick={() =>
+                          setSelectedAccount(account.account_owner)}
                       >
                         {account.account_owner || "Unnamed Account"}
                       </Box>
