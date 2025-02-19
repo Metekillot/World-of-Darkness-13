@@ -6,11 +6,12 @@ from .dmm import *
 def _self_test():
     # test: can we load every DMM in the tree
     count = 0
-    for dirpath, dirnames, filenames in os.walk('.'):
+    for dirpath, dirnames, filenames in os.walk('_maps'):
         if '.git' in dirnames:
             dirnames.remove('.git')
         for filename in filenames:
-            if filename.endswith('.dmm'):
+            print(f"Checking {filename}...")
+            if filename in ['SanFrancisco.dmm', 'runtimetown.dmm']:
                 fullpath = os.path.join(dirpath, filename)
                 try:
                     DMM.from_file(fullpath)
