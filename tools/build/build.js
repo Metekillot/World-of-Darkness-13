@@ -5,6 +5,7 @@
  * @license MIT
  */
 
+process.env.NODE_OPTIONS = '--openssl-legacy-provider';
 const { resolve: resolvePath } = require('path');
 const { resolveGlob } = require('./cbt/fs');
 const { exec } = require('./cbt/process');
@@ -34,6 +35,7 @@ const taskTgui = new Task('tgui')
       .replace('/tgui/', '/');
     const yarn = args => exec('node', [yarnRelease, ...args], {
       cwd: './tgui',
+      env: process.env
     });
     await yarn(['install']);
     await yarn(['run', 'webpack-cli', '--mode=production']);
