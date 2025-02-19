@@ -142,9 +142,7 @@ jobs:
         run: bash tools/ci/check_misc.sh
       - name: Run TGUI Checks
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
-        run: |
-          NODE_OPTIONS=--openssl-legacy-provider node tools/build/build.js
-          tools/build/build --ci lint tgui-test
+        run: tools/build/build --ci lint tgui-test
 
   compile_all_maps:
     name: Compile Maps
