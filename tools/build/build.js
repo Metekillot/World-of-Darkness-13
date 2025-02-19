@@ -50,7 +50,6 @@ const taskDm = new Task('dm')
   .depends('tgui/public/*.bundle.*')
   .depends('tgui/public/*.chunk.*')
   .depends('tgstation.dme')
-  .depends(taskTgui)
   .provides('tgstation.dmb')
   .provides('tgstation.rsc')
   .build(async () => {
@@ -84,4 +83,18 @@ if (process.env['TG_BUILD_TGS_MODE']) {
   tasksToRun.pop();
 }
 
-runTasks(tasksToRun);
+const buildSequentially = async () => {
+  // Run tasks one at a time due to current 'dm' dependency on compiled tgui
+  for (const task of tasksToRun) {
+    await task.run();
+  }
+  const startedAt = Date.now();
+  const time = ((Date.now() - startedAt) / 1000) + 's';
+  console.log(` => Done in ${time}`);
+  process.exit();
+};
+
+buildSequentially().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
