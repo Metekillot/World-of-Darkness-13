@@ -50,6 +50,7 @@ const taskDm = new Task('dm')
   .depends('tgui/public/*.bundle.*')
   .depends('tgui/public/*.chunk.*')
   .depends('tgstation.dme')
+  .depends(taskTgui)
   .provides('tgstation.dmb')
   .provides('tgstation.rsc')
   .build(async () => {
