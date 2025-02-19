@@ -35,29 +35,6 @@
 	direction += " San Francisco"
 	return direction
 
-/obj/item/police_radio/proc/announce_crime(var/crime, var/atom/location)
-	var/area/crime_location = get_area(location)
-	var/direction = get_cardinal_direction(location.x, location.y)
-	var/message = ""
-
-	switch(crime)
-		if("shooting")
-			if(last_shooting + 15 SECONDS < world.time)
-				last_shooting = world.time
-				message = "Citizens report hearing gunshots at [crime_location.name], to the [direction], [location.x]:[location.y]..."
-		if("victim")
-			if(last_shooting_victims + 15 SECONDS < world.time)
-				last_shooting_victims = world.time
-				message = "Active firefight in progress at [crime_location.name], wounded civilians, the [direction], [location.x]:[location.y]..."
-		if("kidnapping")
-			message = "Attempting kidnapping reported at [crime_location.name], to the [direction], [location.x]:[location.y]..."
-		if("murder")
-			message = "Murder at [crime_location.name], to the [direction], [location.x]:[location.y]..."
-
-	if(message != "")
-		for(var/obj/item/police_radio/radio in GLOB.police_radios)
-			radio.say(message)
-
 /obj/item/police_radio/proc/dispatcher_talk(said)
 	say(said)
 

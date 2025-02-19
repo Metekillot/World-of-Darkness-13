@@ -5,22 +5,21 @@
 	plane = GAME_PLANE
 	layer = ABOVE_NORMAL_TURF_LAYER
 	anchored = TRUE
-	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
-	var/climbing = FALSE
+	resistance_flags = INDESTRUCTIBLE
 
-/obj/manholeup/attack_hand(mob/user)
-	if(!climbing)
-		climbing = TRUE
-		if(do_after(user, 50, src))
-			climbing = FALSE
-			var/turf/destination = get_step_multiz(src, UP)
-			if(user.pulling)
-				user.pulling.forceMove(destination)
-			user.forceMove(destination)
-			playsound(src, 'code/modules/wod13/sounds/manhole.ogg', 50, TRUE)
-		else
-			climbing = FALSE
-	..()
+/obj/manholeup/attack_hand(mob/living/user)
+	var/turf/destination = get_step_multiz(src, UP)
+	if(!isliving(user))
+		user.forceMove(destination)
+		return ..()
+	if(!do_after(user, 50, src))
+		to_chat(user, span_notice("You fail to finish climbing up [src]."))
+		return
+	if(user.pulling)
+		user.pulling.forceMove(destination)
+	user.forceMove(destination)
+	playsound(src, 'code/modules/wod13/sounds/manhole.ogg', 50, TRUE)
+	return ..()
 
 /obj/manholedown
 	icon = 'code/modules/wod13/props.dmi'
@@ -29,8 +28,7 @@
 	plane = GAME_PLANE
 	layer = ABOVE_NORMAL_TURF_LAYER
 	anchored = TRUE
-	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
-	var/climbing = FALSE
+	resistance_flags = INDESTRUCTIBLE
 
 /obj/manholedown/Initialize()
 	. = ..()
@@ -40,28 +38,48 @@
 			if(V.upper)
 				icon_state = "[initial(icon_state)]-snow"
 
-/obj/manholedown/attack_hand(mob/user)
-	if(!climbing)
-		climbing = TRUE
-		if(do_after(user, 50, src))
-			climbing = FALSE
-			var/turf/destination = get_step_multiz(src, DOWN)
-			var/mob/living/L = user
-			if(L.pulling)
-				if(istype(L.pulling, /mob/living/carbon/human/npc))
-					var/mob/living/carbon/human/npc/NPC = L.pulling
-					NPC.on_kidnap(L)
-					if(NPC.CheckMove())
-						if(!storyteller_roll(L.get_total_physique() + L.get_total_athletics(), min(NPC.get_total_physique() + min(NPC.get_total_dexterity(), NPC.get_total_athletics()),7)))
-							NPC.Aggro(L, TRUE)
-							L.visible_message("<span class='danger'>[NPC.name] resists going down with [src].</span>", "<span class='danger'>[NPC.name] resists going down, breaking your descent.</span>", null, COMBAT_MESSAGE_RANGE, NPC)
-							return
-				L.pulling.forceMove(destination)
-			user.forceMove(destination)
-			playsound(src, 'code/modules/wod13/sounds/manhole.ogg', 50, TRUE)
-		else
-			climbing = FALSE
-	..()
+/obj/manholedown/attack_hand(mob/living/user)
+	var/move_successful = FALSE
+	var/turf/destination = get_step_multiz(src, DOWN)
+	if(!isliving(user))
+		user.forceMove(destination)
+		return ..()
+	if(!do_after(user, 50, src))
+		to_chat(user, span_notice("You fail to finish climbing down [src]."))
+		return ..()
+	var/mob/living/carbon/human/npc/grabbed_npc = null
+	if(isnpc(user.pulling))
+		grabbed_npc = user.pulling
+	if(isnull(grabbed_npc) || grabbed_npc.IsUnconscious())
+		move_successful = TRUE
+		user.pulling.forceMove(destination)
+		user.forceMove(destination)
+	playsound(src, 'code/modules/wod13/sounds/manhole.ogg', 50, TRUE)
+	if(move_successful)
+		return ..()
+	grabbed_npc.on_kidnap(user)
+	var/kidnapper_dice = user.get_total_physique() + user.get_total_athletics()
+	var/difficulty_minimum = 7
+	var/kidnapping_difficulty
+	// The initial part of our calculation will determine the lower of the two
+	var/dex_or_athletics = min(grabbed_npc.get_total_dexterity(), grabbed_npc.get_total_athletics())
+	// From there, we check what the NPC's base would be for the whole check
+	var/npc_base = grabbed_npc.get_total_physique() + dex_or_athletics
+	// If the NPC's base is less than the minimum difficulty, we set the minimum difficulty instead
+	kidnapping_difficulty = max(npc_base, difficulty_minimum)
+	var/is_roll_numerical = FALSE
+	var/roll_result = storyteller_roll(
+		dice = kidnapper_dice,
+		difficulty = kidnapping_difficulty,
+		numerical = is_roll_numerical)
+	// If the roll is unsuccessful, the NPC aggros and the kidnapper fails to move
+	if(roll_result != ROLL_SUCCESS)
+		grabbed_npc.Aggro(user, TRUE)
+		user.visible_message("<span class='danger'>[grabbed_npc] resists going down with [user].</span>", "<span class='danger'>[grabbed_npc] resists going down, breaking your descent.</span>", null, COMBAT_MESSAGE_RANGE)
+		return ..()
+	user.pulling.forceMove(destination)
+	user.forceMove(destination)
+	return ..()
 
 
 /obj/transfer_point_vamp

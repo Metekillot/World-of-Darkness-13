@@ -1,3 +1,5 @@
+
+
 GLOBAL_LIST_EMPTY(npc_spawn_points)
 SUBSYSTEM_DEF(humannpcpool)
 	name = "Human NPC Pool"
@@ -8,6 +10,14 @@ SUBSYSTEM_DEF(humannpcpool)
 
 	var/list/currentrun = list()
 	var/npc_max = 220
+	// Uses the crime defines from code/modules/wod13/crime_defines.dm
+	var/list/crime_report_message = list(
+		"Officers requested",
+		"Gunshots reported",
+		"Possible homicide reported",
+		"Assault reported",
+		"Attempted kidnapping reported",
+	)
 
 /datum/controller/subsystem/humannpcpool/stat_entry(msg)
 	var/list/activelist = GLOB.npc_list
@@ -48,3 +58,20 @@ SUBSYSTEM_DEF(humannpcpool)
 		var/NEPIS = pick(/mob/living/carbon/human/npc/police, /mob/living/carbon/human/npc/bandit, /mob/living/carbon/human/npc/hobo, /mob/living/carbon/human/npc/walkby, /mob/living/carbon/human/npc/business)
 		new NEPIS(get_turf(kal))
 
+/datum/controller/subsystem/humannpcpool/proc/report_crime(mob/living/perpetrator, crime_type, crime_location = null)
+	// The defines also work as indexes for the crime_report_message list
+	var/announce_direction = FALSE
+	if(!isturf(crime_location))
+		// Eventual support for crimes without locations being reported
+		if(!istext(crime_location))
+			crime_location = get_turf(perpetrator)
+			announce_direction = TRUE
+
+	var/crime_location_message = isturf(crime_location) ? "\
+		Location: [crime_location.x]:[crime_location.y] in [get_area(crime_location)]" : "[crime_location]""
+
+	var/crime_report_message = "\
+		[src.crime_report_message[crime_type]] at "\
+
+	var/joined_message = "[crime_report_message] [crime_location_message]"
+	SEND_SIGNAL(src, COMSIG_ANNOUNCING_CRIME, joined_message, announce_direction)

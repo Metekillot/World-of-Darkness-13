@@ -16,17 +16,11 @@
 		SSbloodhunt.hunted -= src
 		bloodhunted = FALSE
 		SSbloodhunt.update_shit()
-	var/witness_count
-	for(var/mob/living/carbon/human/npc/NEPIC in viewers(7, usr))
-		if(NEPIC && NEPIC.stat != DEAD)
-			witness_count++
-		if(witness_count > 1)
-			for(var/obj/item/police_radio/radio in GLOB.police_radios)
-				radio.announce_crime("murder", get_turf(src))
-			for(var/obj/machinery/p25transceiver/police/radio in GLOB.p25_tranceivers)
-				if(radio.p25_network == "police")
-					radio.announce_crime("murder", get_turf(src))
-					break
+	// Murder is a big deal, sop we should announce when ANY human dies;
+	// instantly if witnessed, otherwise on a delay
+	for(var/witness in viewers(7, src))
+		if(SEND_SIGNAL(witness, COMSIG_WITNESS_CRIME, CRIME_MURDER) & REPORT_CRIME)
+
 	GLOB.masquerade_breakers_list -= src
 	GLOB.sabbatites -= src
 
