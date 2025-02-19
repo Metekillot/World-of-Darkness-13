@@ -36,6 +36,8 @@ excluded_files = [
     "code/_globalvars/*.dm",
     # TGS files come from another repository so lets not worry about them.
     "code/modules/tgs/**/*.dm",
+    # Cantonese characters break our encoding.
+    "code/modules/language/cantonese.dm",
 ]
 
 define_regex = re.compile(r"(\s+)?#define\s?([A-Z0-9_]+)\(?(.+)\)?")
