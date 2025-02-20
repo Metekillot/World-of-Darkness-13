@@ -118,10 +118,10 @@ export const DmTarget = new Juke.Target({
   }
 });
 
-export const BuildTargets = new Juke.Target({
+export const BuildTarget = new Juke.Target({
   dependsOn: [TguiTarget, DmTarget]
 });
 
 
 // Main execution function
-export default TGS_MODE ? TguiTarget : BuildTargets;
+export default TGS_MODE ? TguiTarget : BuildTarget;
