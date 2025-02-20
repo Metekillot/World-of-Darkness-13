@@ -2,9 +2,14 @@
   "private": true,
   "name": "tgui-workspace",
   "version": "4.3.0",
+  "packageManager": "yarn@4.5.1",
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "tgui:build": "BROWSERSLIST_IGNORE_OLD_DATA=true webpack --mode production",
+    "tgui:dev": "node --experimental-modules packages/tgui-dev-server/index.js"
+  },
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/eslint-parser": "^7.12.1",

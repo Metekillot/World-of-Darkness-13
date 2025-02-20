@@ -5,98 +5,123 @@
  * @license MIT
  */
 
-process.env.NODE_OPTIONS = '--openssl-legacy-provider';
-const { resolve: resolvePath } = require('path');
-const { resolveGlob } = require('./cbt/fs');
-const { exec } = require('./cbt/process');
-const { Task, runTasks } = require('./cbt/task');
-const { regQuery } = require('./cbt/winreg');
+import fs from 'fs';
+import https from 'https';
+import { env } from 'process';
 
-// Change working directory to project root
-process.chdir(resolvePath(__dirname, '../../'));
+// process.env.NODE_OPTIONS = '--openssl-legacy-provider';
+import { resolve as resolvePath } from 'path';
+import Juke from './juke/index.js';
+import { DreamMaker } from './lib/byond.js';
+import { yarn } from './lib/yarn.js';
 
-const taskTgui = new Task('tgui')
-  .depends('tgui/.yarn/releases/*')
-  .depends('tgui/yarn.lock')
-  .depends('tgui/webpack.config.js')
-  .depends('tgui/**/package.json')
-  .depends('tgui/packages/**/*.js')
-  .depends('tgui/packages/**/*.jsx')
-  .provides('tgui/public/tgui.bundle.css')
-  .provides('tgui/public/tgui.bundle.js')
-  .provides('tgui/public/tgui-common.bundle.js')
-  .provides('tgui/public/tgui-panel.bundle.css')
-  .provides('tgui/public/tgui-panel.bundle.js')
-  .provides('code/modules/tgui/USE_BUILD_BAT_INSTEAD_OF_DREAM_MAKER.dm')
-  .build(async () => {
-    // Instead of calling `tgui/bin/tgui`, we reproduce the whole pipeline
-    // here for maximum compilation speed.
-    const yarnRelease = resolveGlob('./tgui/.yarn/releases/yarn-*.cjs')[0]
-      .replace('/tgui/', '/');
-    const yarn = args => exec('node', [yarnRelease, ...args], {
-      cwd: './tgui',
-      env: process.env
-    });
-    await yarn(['install']);
-    await yarn(['run', 'webpack-cli', '--mode=production']);
-  });
+// Define TGS_MODE as a Juke.Parameter
+const TGS_MODE = process.env.CBT_BUILD_MODE === 'TGS';
 
-const taskDm = new Task('dm')
-  .depends('_maps/**')
-  .depends('code/**')
-  .depends('goon/**')
-  .depends('html/**')
-  .depends('icons/**')
-  .depends('interface/**')
-  .depends('tgui/public/tgui.html')
-  .depends('tgui/public/*.bundle.*')
-  .depends('tgui/public/*.chunk.*')
-  .depends('tgstation.dme')
-  .provides('tgstation.dmb')
-  .provides('tgstation.rsc')
-  .build(async () => {
-    let compiler = 'dm';
-    // Let's do some registry queries on Windows, because dm is not in PATH.
-    if (process.platform === 'win32') {
-      const installPath = (
-        await regQuery(
-          'HKLM\\Software\\Dantom\\BYOND',
-          'installpath')
-        || await regQuery(
-          'HKLM\\SOFTWARE\\WOW6432Node\\Dantom\\BYOND',
-          'installpath')
-      );
-      if (installPath) {
-        compiler = resolvePath(installPath, 'bin/dm.exe');
-      }
-    } else {
-      compiler = 'DreamMaker';
-    }
-    await exec(compiler, ['tgstation.dme']);
-  });
-
-// Frontend
-const tasksToRun = [
-  taskTgui,
-  taskDm,
-];
-
-if (process.env['TG_BUILD_TGS_MODE']) {
-  tasksToRun.pop();
-}
-
-const buildSequentially = async () => {
-  // Run tasks one at a time due to current 'dm' dependency on compiled tgui
-  for (const task of tasksToRun) {
-    await task.run();
+Juke.chdir('../..', import.meta.url);
+Juke.setup({ file: import.meta.url }).then((code) => {
+  // We're using the currently available quirk in Juke Build, which
+  // prevents it from exiting on Windows, to wait on errors.
+  if (code !== 0 && process.argv.includes('--wait-on-error')) {
+    Juke.logger.error('Please inspect the error and close the window.');
+  return;
   }
-  const startedAt = Date.now();
-  const time = ((Date.now() - startedAt) / 1000) + 's';
-  console.log(` => Done in ${time}`);
-  process.exit();
-};
 
-buildSequentially().catch(err => {
-  console.error(err);
-  process.exit(1);
+  if (TGS_MODE) {
+    // workaround for ESBuild process lingering
+    // Once https://github.com/privatenumber/esbuild-loader/pull/354 is merged and updated to, this can be removed
+    setTimeout(() => process.exit(code), 10000);
+  }
+  else {
+    process.exit(code);
+}
 });
+const DME_NAME = 'tgstation';
+
+export const CiParameter = new Juke.Parameter({ type: 'boolean' });
+
+// Stores the contents of dependencies.sh as a key value pair
+// Best way I could figure to get ahold of this stuff
+const dependencies = fs.readFileSync('dependencies.sh', 'utf8')
+  .split("\n")
+  .map((statement) => statement.replace("export", "").trim())
+  .filter((value) => !(value == "" || value.startsWith("#")))
+  .map((statement) => statement.split("="))
+  .reduce((acc, kv_pair) => {
+    acc[kv_pair[0]] = kv_pair[1];
+    return acc
+}, {})
+
+export const YarnTarget = new Juke.Target({
+  parameters: [CiParameter],
+  inputs: [
+    'tgui/.yarn/+(cache|releases|plugins|sdks)/**/*',
+    'tgui/**/package.json',
+    'tgui/yarn.lock',
+  ],
+  outputs: [
+    'tgui/.yarn/install-target',
+  ],
+  executes: ({ get }) => yarn('install', get(CiParameter) && '--immutable'),
+});
+
+
+export const TguiTarget = new Juke.Target({
+  dependsOn: [YarnTarget],
+  inputs: [
+    'tgui/.yarn/releases/*',
+    'tgui/yarn.lock',
+    'tgui/webpack.config.js',
+    'tgui/**/package.json',
+    'tgui/packages/**/*.js',
+    'tgui/packages/**/*.jsx'
+  ],
+  outputs: [
+    'tgui/public/tgui.bundle.css',
+    'tgui/public/tgui.bundle.js',
+    'tgui/public/tgui-common.bundle.js',
+    'tgui/public/tgui-panel.bundle.css',
+    'tgui/public/tgui-panel.bundle.js',
+    'code/modules/tgui/USE_BUILD_BAT_INSTEAD_OF_DREAM_MAKER.dm'
+  ],
+  executes: () => yarn('tgui:build'),
+});
+
+// DM target
+export const DmTarget = new Juke.Target({
+  name: 'dm',
+  dependsOn: [TguiTarget],
+  inputs: [
+    '_maps/map_files/generic/**',
+    'maps/**/*.dm',
+    'code/**',
+    'html/**',
+    'icons/**',
+    'interface/**',
+    'sound/**',
+    `${DME_NAME}.dme`,
+    'tgui/public/tgui.html',
+    'tgui/public/*.bundle.*',
+    'tgui/public/*.chunk.*',
+  ],
+  outputs: ({ get }) => {
+    return [
+      `${DME_NAME}.dmb`,
+      `${DME_NAME}.rsc`,
+    ]
+  },
+  executes: async ({ get }) => {
+    await DreamMaker(`${DME_NAME}.dme`, {
+      warningsAsErrors: false,
+      defines: [],
+    });
+  }
+});
+
+export const BuildTargets = new Juke.Target({
+  dependsOn: [TguiTarget, DmTarget]
+});
+
+
+// Main execution function
+export default TGS_MODE ? TguiTarget : BuildTargets;
