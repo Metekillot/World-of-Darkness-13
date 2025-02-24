@@ -711,22 +711,46 @@
 	var/active = FALSE
 	masquerade_violating = TRUE
 
-/obj/item/molotov/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
-	call_dharma("grief", throwingdatum.thrower)
-	for(var/turf/open/floor/F in range(2, hit_atom))
-		if(F)
-			new /obj/effect/decal/cleanable/gasoline(F)
+/obj/item/molotov/on_enter_storage(datum/component/storage/concrete/storage_datum)
 	if(active)
-		new /obj/effect/fire(get_turf(hit_atom))
-	playsound(get_turf(hit_atom), 'code/modules/wod13/sounds/explode.ogg', 100, TRUE)
-	qdel(src)
+		var/obj/item/storage/schmuck_bait = storage_datum.parent
+		initiate_common_sense(schmuck_bait)
+
+/obj/item/molotov/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	..()
+	explode(hit_atom)
+
+/obj/item/molotov/proc/explode(atom/relevant_atom)
+	if(active)
+		for(var/turf/open/floor in range(2, get_turf(src)))
+			var/obj/effect/fire/new_flame = new(floor)
+	else
+		for(var/turf/open/floor/floor in range(2, get_turf(src)))
+			new /obj/effect/decal/cleanable/gasoline(floor)
+	playsound(get_turf(src), 'code/modules/wod13/sounds/explode.ogg', 100, TRUE)
+	qdel(src)
 
 /obj/item/molotov/attackby(obj/item/I, mob/user, params)
 	if(I.get_temperature() && !active)
-		active = TRUE
-		log_bomber(user, "has primed a", src, "for detonation")
-		icon_state = "molotov_flamed"
+		toggle_active(user)
+
+/obj/item/molotov/proc/toggle_active(mob/user)
+	active = TRUE
+	log_bomber(user, "has primed a", src, "for detonation")
+	icon_state = "molotov_flamed"
+	var/obj/item/storage/schmuck_bait = null
+	schmuck_bait = get(loc, /obj/item/storage)
+	if(schmuck_bait)
+		initiate_common_sense(schmuck_bait)
+
+/obj/item/molotov/proc/initiate_common_sense(obj/item/storage/schmuck_bait)
+	var/mob/living/possible_item_wearer = get(schmuck_bait.loc, /mob/living)
+	if(possible_item_wearer)
+		to_chat(possible_item_wearer, span_userdanger("[schmuck_bait] catches fire! SHIT!"))
+	else
+		schmuck_bait.visible_message(span_userdanger("[schmuck_bait] catches fire! SHIT!"))
+	explode()
+
 
 /obj/item/vampire_flamethrower
 	name = "flamethrower"

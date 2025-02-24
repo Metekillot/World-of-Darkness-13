@@ -92,15 +92,16 @@ SUBSYSTEM_DEF(die_in_a_fire)
 					V.opacity = FALSE
 					V.layer = OPEN_DOOR_LAYER
 	var/total_burn = 0
-	if(istype(get_turf(src), /turf/open/floor))
-		var/turf/open/floor/A = get_turf(src)
+	if(istype(get_turf(src), /turf/open))
+		var/turf/open/A = get_turf(src)
 		A.burn_material = max(0, A.burn_material-(1*stage))
 		total_burn += A.burn_material
 		if(prob(A.spread_chance))
 			change_stage(min(3, stage+1))
-		if(A.burn_material == 0)
+ 		if(A.burn_material == 0)
 			new /obj/effect/decal/cleanable/fire_ash(A)
 			A.spread_chance = initial(A.spread_chance)
+			stage -= 1
 	if(total_burn)
 		for(var/turf/open/floor/A in range(1, src))
 			var/obj/structure/vampdoor/V = locate() in A
@@ -163,8 +164,7 @@ SUBSYSTEM_DEF(die_in_a_fire)
 			spread_chance += 10
 
 /turf/open/floor
-	var/spread_chance = 3
-	var/burn_material = 3
+
 
 /turf/open/floor/plating/granite
 	spread_chance = 0
