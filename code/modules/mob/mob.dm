@@ -892,7 +892,6 @@
 	set hidden = TRUE
 	set category = null
 	return
-<<<<<<< HEAD
 /**
  * Topic call back for any mob
  *
@@ -981,8 +980,6 @@
 ///Is the mob muzzled (default false)
 /mob/proc/is_muzzled()
 	return FALSE
-=======
->>>>>>> d1ccb530b21a3c41ef5ec37ef5f9330d6e562441
 
 /// Adds this list to the output to the stat browser
 /mob/proc/get_status_tab_items()

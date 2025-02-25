@@ -64,7 +64,6 @@
 	QDEL_NULL(physiology)
 	GLOB.human_list -= src
 
-<<<<<<< HEAD
 /mob/living/carbon/human/ZImpactDamage(turf/T, levels)
 	if(!HAS_TRAIT(src, TRAIT_FREERUNNING) || levels > 1)
 		if(src.athletics < 5) // falling off one level
@@ -72,12 +71,6 @@
 	visible_message("<span class='danger'>[src] makes a hard landing on [T] but remains unharmed from the fall.</span>", \
 					"<span class='userdanger'>You brace for the fall. You make a hard landing on [T] but remain unharmed.</span>")
 	Knockdown(levels * 50)
-=======
-	if (mob_mood)
-		QDEL_NULL(mob_mood)
-
-	return ..()
->>>>>>> d1ccb530b21a3c41ef5ec37ef5f9330d6e562441
 
 /mob/living/carbon/human/prepare_data_huds()
 	//Update med hud images...
@@ -99,7 +92,6 @@
 
 
 /mob/living/carbon/human/Topic(href, href_list)
-<<<<<<< HEAD
 	if(href_list["embedded_object"] && usr.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
 		var/obj/item/bodypart/L = locate(href_list["embedded_limb"]) in bodyparts
 		if(!L)
@@ -177,8 +169,6 @@
 	var/mob/living/user = usr
 	if(istype(user) && href_list["shoes"] && shoes && (user.mobility_flags & MOBILITY_USE)) // we need to be on the ground, so we'll be a bit looser
 		shoes.handle_tying(usr)
-=======
->>>>>>> d1ccb530b21a3c41ef5ec37ef5f9330d6e562441
 
 ///////KARMA//////
 	if(href_list["masquerade"])
@@ -585,15 +575,6 @@
 			balloon_alert(src, "remove [target.p_their()] mask first!")
 			return FALSE
 
-<<<<<<< HEAD
-//		if (!getorganslot(ORGAN_SLOT_LUNGS))
-//			to_chat(src, "<span class='warning'>You have no lungs to breathe with, so you cannot perform CPR!</span>")
-//			return FALSE
-
-//		if (HAS_TRAIT(src, TRAIT_NOBREATH))
-//			to_chat(src, "<span class='warning'>You do not breathe, so you cannot perform CPR!</span>")
-//			return FALSE
-=======
 		if(HAS_TRAIT_FROM(src, TRAIT_NOBREATH, DISEASE_TRAIT))
 			to_chat(src, span_warning("you can't breathe!"))
 			return FALSE
@@ -605,7 +586,6 @@
 		if(human_lungs.organ_flags & ORGAN_FAILING)
 			balloon_alert(src, "your lungs are too damaged!")
 			return FALSE
->>>>>>> d1ccb530b21a3c41ef5ec37ef5f9330d6e562441
 
 		visible_message(span_notice("[src] is trying to perform CPR on [target.name]!"), \
 						span_notice("You try to perform CPR on [target.name]... Hold still!"))
@@ -617,30 +597,11 @@
 		if (target.health > target.crit_threshold)
 			return FALSE
 
-<<<<<<< HEAD
-		visible_message("<span class='notice'>[src] performs CPR on [target.name]!</span>", "<span class='notice'>You perform CPR on [target.name].</span>")
-		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "saved_life", /datum/mood_event/saved_life)
-		if(last_cpr_exp+1200 < world.time)
-			last_cpr_exp = world.time
-			if(isnpc(target))
-				var/mob/living/carbon/human/npc/N = target
-				if(N.last_damager != src)
-					AdjustHumanity(1, 10)
-					call_dharma("savelife", src)
-//			if(key)
-//				var/datum/preferences/P = GLOB.preferences_datums[ckey(key)]
-//				if(P)
-//					var/mode = 1
-//					if(HAS_TRAIT(src, TRAIT_NON_INT))
-//						mode = 2
-//					P.exper = min(calculate_mob_max_exper(src), P.exper+(20/mode))
-=======
 		visible_message(span_notice("[src] performs CPR on [target.name]!"), span_notice("You perform CPR on [target.name]."))
 		if(HAS_MIND_TRAIT(src, TRAIT_MORBID))
 			add_mood_event("morbid_saved_life", /datum/mood_event/morbid_saved_life)
 		else
 			add_mood_event("saved_life", /datum/mood_event/saved_life)
->>>>>>> d1ccb530b21a3c41ef5ec37ef5f9330d6e562441
 		log_combat(src, target, "CPRed")
 
 		if (HAS_TRAIT(target, TRAIT_NOBREATH))
@@ -798,51 +759,6 @@
 /mob/living/carbon/human/update_health_hud()
 	if(!client || !hud_used)
 		return
-<<<<<<< HEAD
-	if(dna.species.update_health_hud())
-		return
-	else
-		if(hud_used.healths)
-			var/health_amount = min(health, maxHealth - getStaminaLoss())
-			if(..(health_amount)) //not dead
-				switch(hal_screwyhud)
-					if(SCREWYHUD_CRIT)
-						hud_used.healths.icon_state = "health6"
-					if(SCREWYHUD_DEAD)
-						hud_used.healths.icon_state = "health7"
-					if(SCREWYHUD_HEALTHY)
-						hud_used.healths.icon_state = "health0"
-//		if(hud_used.healthdoll)
-//			hud_used.healthdoll.cut_overlays()
-//			if(stat != DEAD)
-//				hud_used.healthdoll.icon_state = "healthdoll_OVERLAY"
-//				for(var/X in bodyparts)
-//					var/obj/item/bodypart/BP = X
-//					var/damage = BP.burn_dam + BP.brute_dam
-//					var/comparison = (BP.max_damage/5)
-//					var/icon_num = 0
-//					if(damage)
-//						icon_num = 1
-//					if(damage > (comparison))
-//						icon_num = 2
-//					if(damage > (comparison*2))
-//						icon_num = 3
-//					if(damage > (comparison*3))/
-//						icon_num = 4
-//					if(damage > (comparison*4))
-//						icon_num = 5
-//					if(hal_screwyhud == SCREWYHUD_HEALTHY)
-//						icon_num = 0
-//					if(icon_num)
-//						hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[BP.body_zone][icon_num]"))
-//				for(var/t in get_missing_limbs()) //Missing limbs
-//					hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[t]6"))
-//				for(var/t in get_disabled_limbs()) //Disabled limbs
-//					hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[t]7"))
-//			else
-//				hud_used.healthdoll.icon_state = "healthdoll_DEAD"
-=======
->>>>>>> d1ccb530b21a3c41ef5ec37ef5f9330d6e562441
 
 	// Updates the health bar, also sends signal
 	. = ..()
